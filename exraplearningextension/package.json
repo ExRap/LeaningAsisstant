@@ -14,8 +14,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "exraplearningextension.helloWorld",
-        "title": "Hello World"
+        "command": "exraplearningextension.pythonTutorial",
+        "title": "Start learning Python"
+      },
+      {
+        "command": "exraplearningextension.fullquestionhandler",
+        "title": "Full Question"
       }
     ]
   },
