@@ -1,0 +1,15 @@
+name: ExRap
+region: us-east-1
+cloudProvider: aws
+sdk:
+  language: ts
+  options:
+    runtime: browser
+  path: ./sdk/
+classes:
+  - path: gptCaller.js
+    type: jsonrpc
+    methods: []
+  - path: backendCaller.js
+    type: jsonrpc
+    methods: []
