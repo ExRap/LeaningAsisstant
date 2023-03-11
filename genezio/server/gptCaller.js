@@ -66,8 +66,9 @@ export class GptCaller {
     // create a POST request and add it to mongodb
     // TODO
     let lines = completion.data.choices[0].text.split("\n");
+    lines = lines.splice(0, lines.length / 2);
     lines.append("# TODO");
-    return lines.join(lines.splice(0, lines.length / 2));
+    return lines.join(lines);
     // return completion.data.choices[0].text.splice() / 2;
   }
 
