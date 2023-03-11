@@ -49,7 +49,7 @@ services:
     networks:
       - app-tier
     volumes:
-      - '../sandbox:/sandbox'
+      - '/usr/share/sandbox:/usr/share/sandbox'
       - '/var/run/docker.sock:/var/run/docker.sock'
 
 
