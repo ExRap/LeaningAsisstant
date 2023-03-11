@@ -17,7 +17,6 @@ export class GptCaller {
     const completion = await this.openai.createCompletion({
       model: "text-davinci-003",
       prompt: requestText,
-<<<<<<< HEAD
       max_tokens: 2048
     });
     console.log(
@@ -44,8 +43,6 @@ export class GptCaller {
     const completion = await this.openai.createCompletion({
       model: "text-davinci-003",
       prompt: `describe me this code:` + requestText,
-=======
->>>>>>> c0445c6 (Improve extension.)
       max_tokens: 2048
     });
     console.log(
