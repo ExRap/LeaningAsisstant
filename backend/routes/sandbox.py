@@ -18,7 +18,7 @@ def run_sandbox():
     Run a sandbox
     ---
     tags:
-      - users
+      - sandbox
     description: "Endpoint to start a sandbox"
     summary: "Endpoint to start a sandbox"
     parameters:

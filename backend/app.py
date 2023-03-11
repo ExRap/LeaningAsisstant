@@ -7,6 +7,7 @@ from flask_fontawesome import FontAwesome
 # from routes.users import users_endpoint
 # from routes.centers import centers_endpoint
 from routes.sandbox import sandbox_blueprint
+from routes.partial import partial_blueprint
 
 DEBUG_MODE = True
 app = Flask(__name__, static_url_path="/static")
@@ -19,6 +20,7 @@ cors = CORS(app, resources={r"*": {"origins": "*"}})
 # app.register_blueprint(users_endpoint)
 # app.register_blueprint(centers_endpoint)
 app.register_blueprint(sandbox_blueprint)
+# app.register_blueprint(partial_blueprint)
 
 app.config['SWAGGER'] = {
     'favicon': '/static/favicon.ico',
