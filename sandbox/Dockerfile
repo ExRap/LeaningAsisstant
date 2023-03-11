@@ -2,7 +2,7 @@
 FROM python:3.10-alpine
 
 # Set the working directory to /app
-WORKDIR /usr
+WORKDIR /usr/share/sandbox
 
 # Copy the requirements file and install dependencies
 COPY requirements.txt .

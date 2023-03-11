@@ -27,35 +27,37 @@ def run_sandbox():
         description: File path
     responses:
       200:
-        description: "A new endpoint was created was created"
+        description: "Sandbox started"
       400:
         description: "generic error"
     """
 
-    # try:
-    # logging.debug(f'request form is: {request.form}')
-    # print(request.data)
-    logging.debug(f'starting container...')
-    container = client.containers.run(
-        'sandbox:latest',  # replace with your image name and tag
-        detach=True,  # run container in the background
-        volumes={
-            '/usr/share/sandbox/main.py': {
-                'bind': '/usr/share/sandbox/dummy.py',
-                'mode': 'rw'
+    try:
+        logging.debug(f'starting container...')
+        container = client.containers.run(
+            'sandbox:latest',  # replace with your image name and tag
+            detach=True,  # run container in the background
+            volumes={
+                '/usr/share/sandbox/main.py': {
+                    'bind': '/usr/share/sandbox/dummy.py',
+                    'mode': 'rw'
+                }
             }
-        }
-    )
+        )
 
-    # get the container ID
-    container_id = container.id
+        # get the container ID
+        container_id = container.id
 
-    # print the container ID
-    print(f'Container ID: {container_id}')
-    # except Exception as e:
-    #     return "An error has occurred: {}".format(str(e)), 400
+        # print the container ID
+        logging.debug(f'Container ID: {container_id}')
 
-    return jsonify({'status': 'ok'}), 201
+        exit_status = container.wait()
 
+        # Get the exit code
+        exit_code = exit_status['StatusCode']
+        logging.debug(f'exit code is: {exit_code}')
 
-# docker.errors.APIError: 500 Server Error for http+docker://localhost/v1.41/containers/182e76be68aa6b01632160db9e9db83556c524d3fc65b0066bb664bdec994698/start: Internal Server Error ("b'Mounts denied: \nThe path /sandbox/main.py is not shared from the host and is not known to Docker.\nYou can configure shared paths from Docker -> Preferences... -> Resources -> File Sharing.\nSee https://docs.docker.com/desktop/mac for more info.'")
+        return jsonify({'status': 'container started successfully', 'exit_code': exit_code}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400

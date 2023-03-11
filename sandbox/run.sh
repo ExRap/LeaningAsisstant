@@ -1,1 +1,1 @@
-docker run -v $1:/usr/dummy.py -it sandbox
+docker run -v /usr/share/sandbox/main.py:/usr/share/sandbox/dummy.py -it sandbox
