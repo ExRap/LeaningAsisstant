@@ -47,6 +47,8 @@ services:
     #   - mongodb
     networks:
       - app-tier
+    volumes:
+      - '/Users/dragosmanolea/work/LeaningAsisstant/sandbox:/sandbox'
 
 
 networks:

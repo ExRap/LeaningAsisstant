@@ -7,7 +7,7 @@ from lib.mongo_client import pomodoro_db
 
 sandbox_blueprint = Blueprint("sandbox", __name__, url_prefix="/api/v1/sandbox")
 sandbox_collection = pomodoro_db['sandbox']
-
+client = docker.from_env()
 @sandbox_blueprint.route("/start", methods=["POST"])
 def run_sandbox():
     """
@@ -28,15 +28,14 @@ def run_sandbox():
         description: "generic error"
     """
     try:
+        print(f'request data is: {request.data}')
         print(request.data)
-
-        client = docker.from_env()
-
+        print(f'starting container...')
         container = client.containers.run(
             'sandbox:latest',  # replace with your image name and tag
             detach=True,  # run container in the background
             volumes={
-                '/Users/dragosmanolea/work/LeaningAsisstant/sandbox/main.py': {
+                '/sandbox/main.py': {
                     'bind': '/usr/dummy.py',
                     'mode': 'rwx'
                 }
@@ -48,9 +47,6 @@ def run_sandbox():
 
         # print the container ID
         print(f'Container ID: {container_id}')
-
-        # user_data['container_id'] = container_id
-        # users_collection.insert_one(user_data)
     except Exception as e:
         return "An error has occurred: {}".format(str(e)), 400
 
