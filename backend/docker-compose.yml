@@ -1,0 +1,59 @@
+version: '3'
+
+# Run as
+# docker-compose build; docker-compose up -d
+# Check with
+# docker ps
+# Then check the logs with
+# docker logs --tail 50 $container_id
+# docker-compose images
+# docker-compose logs --tail 20 repo_name
+
+
+services:
+
+  # redis:
+  #   image: redis
+  #   ports:
+  #     - 6379:6379
+  #   networks:
+  #     - app-tier
+  #   volumes:
+  #     - redis_data:/data
+    
+  # mongodb:
+  #   image : mongo
+  #   container_name: mongodb
+  #   environment:
+  #   - PUID=1000
+  #   - PGID=1000
+  #   volumes:
+  #   - mongo_data:/data/db
+  #   ports:
+  #   - 27017:27017
+  #   networks:
+  #     - app-tier
+  #   restart: unless-stopped
+
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    # depends_on:
+    #   - redis
+    #   - mongodb
+    networks:
+      - app-tier
+
+
+networks:
+  app-tier:
+    driver: bridge
+
+# volumes:
+#     redis_data:
+#     mongo_data:
+  

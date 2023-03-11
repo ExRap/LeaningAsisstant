@@ -1,0 +1,7 @@
+Flask
+flasgger
+Flask-Cors
+Flask-Bootstrap4
+Flask-FontAwesome
+redis
+pymongo
