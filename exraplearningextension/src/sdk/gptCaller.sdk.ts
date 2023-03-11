@@ -14,6 +14,14 @@ export class GptCaller {
         return await GptCaller.remote.call("GptCaller.askChatGPT", requestText)  
   }
 
+  static async optimizeCode(requestText: any): Promise<any> {
+        return await GptCaller.remote.call("GptCaller.optimizeCode", requestText)  
+  }
+
+  static async describeCode(requestText: any): Promise<any> {
+        return await GptCaller.remote.call("GptCaller.describeCode", requestText)  
+  }
+
   
 
 }
