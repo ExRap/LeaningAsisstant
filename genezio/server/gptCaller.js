@@ -51,4 +51,30 @@ export class GptCaller {
     );
     return completion.data.choices[0].text;
   }
+
+  async generatePartialFunction(user_id, requestText) {
+    const completion = await this.openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `describe me this code:` + requestText,
+      max_tokens: 2048
+    });
+    console.log(
+      `DEBUG: request: ${requestText}, response: ${completion.data.choices[0]
+        .text}`
+    );
+
+    // create a POST request and add it to mongodb
+    // TODO
+    let lines = completion.data.choices[0].text.split("\n");
+    lines.append("# TODO");
+    return lines.join(lines.splice(0, lines.length / 2));
+    // return completion.data.choices[0].text.splice() / 2;
+  }
+
+  async generateCompleteFunction(user_id, requestText) {
+    // create a GET request to get it from mongodb
+
+  }
+
+
 }
