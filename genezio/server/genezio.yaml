@@ -4,7 +4,7 @@ cloudProvider: aws
 sdk:
   language: ts
   options:
-    runtime: browser
+    runtime: node
   path: ./sdk/
 classes:
   - path: gptCaller.js
