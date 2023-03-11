@@ -32,3 +32,37 @@ def save_partial():
     partial_content['_id'] = str(partial_content['_id'])
     return jsonify(partial_content), 201
 
+@partial_blueprint.route("/<uid>", methods=["GET"])
+def get_partial_code(uid):
+    """
+    return partial code by uid
+    ---
+    tags:
+    - partial
+    summary: "Return partial code by uid"
+    description: "Return partial code by uid"
+    parameters:
+    - name: "uid"
+      in: "path"
+      description: "ID of individual partial code submited by uid"
+      required: true
+      type: "string"
+    responses:
+      200:
+        description: "Successful operation"
+      400:
+        description: "generic error"
+      404:
+        description: "partial code not found in database"
+    """
+    try:
+        partial_code = partial_collection.find_one({"uid": uid})
+        if not partial_code:
+            error_message = "partial_code with id {} not found".format(uid)
+            return error_message, 404
+        partial_code['_id'] = str(partial_code['_id'])
+    except Exception as e:
+        return "An error has occurred {}".format(str(e)), 400
+
+    return jsonify(partial_code)
+
