@@ -2,7 +2,7 @@ import docker
 from flask import Blueprint, request, jsonify
 from bson.json_util import dumps, loads
 from bson.objectid import ObjectId
-
+import os
 from lib.mongo_client import pomodoro_db
 
 sandbox_blueprint = Blueprint("sandbox", __name__, url_prefix="/api/v1/sandbox")
@@ -22,9 +22,9 @@ def run_sandbox():
     summary: "Endpoint to start a sandbox"
     parameters:
       - in: formData
-        name: file_path
+        name: file_content
         type: string
-        description: File path
+        description: File content
     responses:
       200:
         description: "Sandbox started"
@@ -33,12 +33,17 @@ def run_sandbox():
     """
 
     try:
+        file_path = '/usr/share/sandbox/main.py'
         logging.debug(f'starting container...')
+        file_content = request.form.get('file_content')
+        os.remove(file_path)
+        with open(file_path, 'w+') as f:
+            f.write(file_content)
         container = client.containers.run(
             'sandbox:latest',  # replace with your image name and tag
             detach=True,  # run container in the background
             volumes={
-                '/usr/share/sandbox/main.py': {
+                file_path: {
                     'bind': '/usr/share/sandbox/dummy.py',
                     'mode': 'rw'
                 }
