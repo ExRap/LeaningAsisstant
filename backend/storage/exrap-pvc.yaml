@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: exrap-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: exrapstorage
+  resources:
+    requests:
+      storage: 1Gi
