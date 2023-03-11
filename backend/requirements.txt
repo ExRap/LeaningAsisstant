@@ -5,3 +5,4 @@ Flask-Bootstrap4
 Flask-FontAwesome
 redis
 pymongo
+docker

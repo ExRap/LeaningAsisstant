@@ -1,1 +1,1 @@
-docker run -v /Users/dragosmanolea/work/LeaningAsisstant/sandbox/main.py:/usr/dummy.py -it sandbox $1
+docker run -v $1:/usr/dummy.py -it sandbox
