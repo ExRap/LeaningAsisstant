@@ -1,4 +1,4 @@
-import { GptCaller } from "../server/sdk/gptCaller.sdk";
+import { GptCaller } from "../../exraplearningai/src/sdk/gptCaller.sdk";
 
 function sendRequest(params) {
     params.preventDefault();

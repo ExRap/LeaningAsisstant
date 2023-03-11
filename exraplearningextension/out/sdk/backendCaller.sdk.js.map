@@ -1,0 +1,1 @@
+{"version":3,"file":"backendCaller.sdk.js","sourceRoot":"","sources":["../../src/sdk/backendCaller.sdk.ts"],"names":[],"mappings":";AAAA;;;EAGE;;;AAEF,qCAAiC;AAexB,uFAfA,eAAM,OAeA;AAXf,MAAa,aAAa;IAGtB,MAAM,CAAC,KAAK,CAAC,QAAQ;QACjB,OAAO,MAAM,aAAa,CAAC,MAAM,CAAC,IAAI,CAAC,wBAAwB,CAAC,CAAA;IACtE,CAAC;;AALH,sCASC;AARU,oBAAM,GAAG,IAAI,eAAM,CAAC,uEAAuE,CAAC,CAAA"}
