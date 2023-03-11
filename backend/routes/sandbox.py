@@ -2,15 +2,16 @@ import docker
 from flask import Blueprint, request, jsonify
 from bson.json_util import dumps, loads
 from bson.objectid import ObjectId
-import os
-from lib.mongo_client import pomodoro_db
+import requests
+import logging
+import json
 
 sandbox_blueprint = Blueprint("sandbox", __name__, url_prefix="/api/v1/sandbox")
-sandbox_collection = pomodoro_db['sandbox']
-import logging
+
 logging.basicConfig(level=logging.DEBUG)
 
-client = docker.from_env()
+SANDBOX_COMPUTING_EDGE_URL = 'http://20.23.243.43:5001/api/v1/sandbox/start'
+
 @sandbox_blueprint.route("/start", methods=["POST"])
 def run_sandbox():
     """
@@ -21,48 +22,32 @@ def run_sandbox():
     description: "Endpoint to start a sandbox"
     summary: "Endpoint to start a sandbox"
     parameters:
-      - in: formData
-        name: file_content
-        type: string
+      - name: file_content
+        in: formData
         description: File content
+        type: string
     responses:
       200:
         description: "Sandbox started"
       400:
         description: "generic error"
     """
+    
 
     try:
-        file_path = '/usr/share/sandbox/main.py'
-        logging.debug(f'starting container...')
         file_content = request.form.get('file_content')
-        os.remove(file_path)
-        with open(file_path, 'w+') as f:
-            f.write(file_content)
-        container = client.containers.run(
-            'sandbox:latest',  # replace with your image name and tag
-            detach=True,  # run container in the background
-            volumes={
-                file_path: {
-                    'bind': '/usr/share/sandbox/dummy.py',
-                    'mode': 'rw'
-                }
-            }
-        )
+        # headers = {
+        #     'Content-Type': 'multipart/form-data',
+        # }
 
-        # get the container ID
-        container_id = container.id
+        data = {
+            'file_content': file_content,
+        }
 
-        # print the container ID
-        logging.debug(f'Container ID: {container_id}')
+        response = requests.post(SANDBOX_COMPUTING_EDGE_URL, data=data)
+        
 
-        exit_status = container.wait()
-
-        # Get the exit code
-        exit_code = exit_status['StatusCode']
-        logging.debug(f'exit code is: {exit_code}')
-
-        return jsonify({'status': 'container started successfully', 'exit_code': exit_code}), 201
+        return jsonify(json.loads(response.text)), 201
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 400
+        return jsonify({'error2': str(e)}), 400

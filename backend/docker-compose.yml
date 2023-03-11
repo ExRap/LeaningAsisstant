@@ -21,19 +21,19 @@ services:
   #   volumes:
   #     - redis_data:/data
     
-  # mongodb:
-  #   image : mongo
-  #   container_name: mongodb
-  #   environment:
-  #   - PUID=1000
-  #   - PGID=1000
-  #   volumes:
-  #   - mongo_data:/data/db
-  #   ports:
-  #   - 27017:27017
-  #   networks:
-  #     - app-tier
-  #   restart: unless-stopped
+  mongodb:
+    image : mongo
+    container_name: mongodb
+    environment:
+    - PUID=1000
+    - PGID=1000
+    # volumes:
+    # - mongo_data:/data/db
+    ports:
+    - 27017:27017
+    networks:
+      - app-tier
+    restart: unless-stopped
 
 
   backend:
@@ -43,9 +43,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5001:5001"
-    # depends_on:
-    #   - redis
-    #   - mongodb
+    depends_on:
+      # - redis
+      - mongodb
     networks:
       - app-tier
     volumes:

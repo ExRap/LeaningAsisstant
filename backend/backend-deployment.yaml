@@ -30,5 +30,12 @@ spec:
           ports:
             - containerPort: 5001
           resources: {}
+          volumeMounts:
+            - name: exrap-docker-socket
+              mountPath: /var/run/docker.sock
       restartPolicy: Always
+      volumes:
+        - name: exrap-docker-socket
+          persistentVolumeClaim:
+            claimName: exrap-pvc
 status: {}
