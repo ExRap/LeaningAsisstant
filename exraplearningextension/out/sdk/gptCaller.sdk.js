@@ -22,6 +22,16 @@ class GptCaller {
             return yield GptCaller.remote.call("GptCaller.askChatGPT", requestText);
         });
     }
+    static optimizeCode(requestText) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield GptCaller.remote.call("GptCaller.optimizeCode", requestText);
+        });
+    }
+    static describeCode(requestText) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield GptCaller.remote.call("GptCaller.describeCode", requestText);
+        });
+    }
 }
 exports.GptCaller = GptCaller;
 GptCaller.remote = new remote_1.Remote("https://2oga24x2bp3efzcvdirxm6eaei0fbzch.lambda-url.us-east-1.on.aws/");
