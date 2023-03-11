@@ -57,17 +57,6 @@ Whether you are looking to learn Python for work, personal projects, or just for
         editor.edit(editBuilder => {
             editBuilder.insert(documentStart, introduction);
         });
-        vscode.window.showInputBox({
-            prompt: 'Enter some text',
-            placeHolder: 'Type here',
-        }).then((experienceLevel) => {
-            if (experienceLevel) {
-                vscode.window.showInformationMessage(`You typed: ${experienceLevel}`);
-            }
-            else {
-                vscode.window.showWarningMessage('No input provided');
-            }
-        });
         const options = ['Beginner', 'Intermedaiate', 'Advanced'];
         vscode.window.showQuickPick(options).then((experienceLevel) => {
             if (experienceLevel) {
@@ -90,7 +79,7 @@ Whether you are looking to learn Python for work, personal projects, or just for
         });
     });
     context.subscriptions.push(initialDisposable);
-    let disposable = vscode.commands.registerCommand('exraplearningextension.fullquestionhandler', () => {
+    let fullDisposable = vscode.commands.registerCommand('exraplearningextension.fullquestionhandler', () => {
         const editor = vscode.window.activeTextEditor;
         if (!editor) {
             return; // No open text editor
@@ -109,7 +98,47 @@ Whether you are looking to learn Python for work, personal projects, or just for
             console.log(error);
         });
     });
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(fullDisposable);
+    let describeDisposable = vscode.commands.registerCommand('exraplearningextension.describecodehandler', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return; // No open text editor
+        }
+        // Get the selected text
+        const selection = editor.selection;
+        const selectedText = editor.document.getText(selection);
+        vscode.window.showInformationMessage(selectedText);
+        gptCaller_sdk_1.GptCaller.describeCode(selectedText).then((response) => {
+            editor.edit((editBuilder) => {
+                const document = editor.document;
+                const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
+                editBuilder.insert(new vscode.Position(lastLine + 1, 0), '\n\n"""' + response.slice(1) + '\n"""');
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+    });
+    context.subscriptions.push(describeDisposable);
+    let writeFunctionDisposable = vscode.commands.registerCommand('exraplearningextension.writeFunctionhandler', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return; // No open text editor
+        }
+        // Get the selected text
+        const selection = editor.selection;
+        const selectedText = editor.document.getText(selection);
+        vscode.window.showInformationMessage(selectedText);
+        gptCaller_sdk_1.GptCaller.describeCode("Write a Pythn function " + selectedText).then((response) => {
+            editor.edit((editBuilder) => {
+                const document = editor.document;
+                const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
+                editBuilder.insert(new vscode.Position(lastLine + 1, 0), '\n\n' + response.slice(1) + '\n');
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+    });
+    context.subscriptions.push(writeFunctionDisposable);
 }
 exports.activate = activate;
 // This method is called when your extension is deactivated

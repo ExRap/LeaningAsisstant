@@ -8,17 +8,12 @@ import { Remote } from "./remote"
 
 
 export class GptCaller {
-<<<<<<< HEAD
-    static remote = new Remote("https://uauhoq3fdqdylezq2eptjygbwe0tsrnh.lambda-url.us-east-1.on.aws/")
-=======
     static remote = new Remote("https://2oga24x2bp3efzcvdirxm6eaei0fbzch.lambda-url.us-east-1.on.aws/")
->>>>>>> c0445c6 (Improve extension.)
 
     static async askChatGPT(requestText: any): Promise<any> {
         return await GptCaller.remote.call("GptCaller.askChatGPT", requestText)  
   }
 
-<<<<<<< HEAD
   static async optimizeCode(requestText: any): Promise<any> {
         return await GptCaller.remote.call("GptCaller.optimizeCode", requestText)  
   }
@@ -27,8 +22,14 @@ export class GptCaller {
         return await GptCaller.remote.call("GptCaller.describeCode", requestText)  
   }
 
-=======
->>>>>>> c0445c6 (Improve extension.)
+  static async generatePartialFunction(user_id: any, requestText: any): Promise<any> {
+        return await GptCaller.remote.call("GptCaller.generatePartialFunction", user_id, requestText)  
+  }
+
+  static async generateCompleteFunction(user_id: any, requestText: any): Promise<any> {
+        return await GptCaller.remote.call("GptCaller.generateCompleteFunction", user_id, requestText)  
+  }
+
   
 
 }

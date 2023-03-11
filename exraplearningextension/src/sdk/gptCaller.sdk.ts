@@ -22,6 +22,14 @@ export class GptCaller {
         return await GptCaller.remote.call("GptCaller.describeCode", requestText)  
   }
 
+  static async generatePartialFunction(user_id: any, requestText: any): Promise<any> {
+        return await GptCaller.remote.call("GptCaller.generatePartialFunction", user_id, requestText)  
+  }
+
+  static async generateCompleteFunction(user_id: any, requestText: any): Promise<any> {
+        return await GptCaller.remote.call("GptCaller.generateCompleteFunction", user_id, requestText)  
+  }
+
   
 
 }

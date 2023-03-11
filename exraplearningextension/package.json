@@ -19,7 +19,15 @@
       },
       {
         "command": "exraplearningextension.fullquestionhandler",
-        "title": "Full Question"
+        "title": "Answer Question"
+      },
+      {
+        "command": "exraplearningextension.describecodehandler",
+        "title": "Describe Code"
+      },
+      {
+        "command": "exraplearningextension.writeFunctionhandler",
+        "title": "Write Function"
       }
     ]
   },
