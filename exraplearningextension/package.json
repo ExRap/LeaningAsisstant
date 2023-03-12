@@ -36,6 +36,14 @@
       {
         "command": "exraplearningextension.optimizeCodehandler",
         "title": "Optimize code"
+      },
+      {
+        "command": "exraplearningextension.checkSandboxhandler",
+        "title": "Check in Sandbox"
+      },
+      {
+        "command": "exraplearningextension.getCachedhandler",
+        "title": "Display full implementation"
       }
     ]
   },

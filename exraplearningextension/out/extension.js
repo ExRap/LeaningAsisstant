@@ -183,9 +183,89 @@ Whether you are looking to learn Python for work, personal projects, or just for
         });
     });
     context.subscriptions.push(optimizeCodeDisposable);
+    let sandboxDisposable = vscode.commands.registerCommand('exraplearningextension.checkSandboxhandler', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return; // No open text editor
+        }
+        // Get the selected text
+        const selection = editor.selection;
+        const selectedText = editor.document.getText(selection);
+        const postData = JSON.stringify({
+            file_content: selectedText,
+        });
+        makePostRequest('http://hackathon.echopoint.tech/api/v1/sandbox/start', postData)
+            .then((data) => {
+            console.log(data);
+            let ceva = JSON.parse(data);
+            console.log(ceva.exit_code);
+            if (ceva.exit_code == 0) {
+                editor.edit((editBuilder) => {
+                    const document = editor.document;
+                    const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
+                    editBuilder.insert(new vscode.Position(lastLine + 1, 0), '\n\n' + "Sandbox validation passed" + '\n' + "Logs:" + ceva.logs);
+                });
+            }
+            else {
+                editor.edit((editBuilder) => {
+                    const document = editor.document;
+                    const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
+                    editBuilder.insert(new vscode.Position(lastLine + 1, 0), '\n\n' + "Sandbox validation failed" + '\n' + "Logs:" + ceva.logs);
+                });
+            }
+        })
+            .catch((err) => {
+            console.error(err);
+        });
+    });
+    context.subscriptions.push(sandboxDisposable);
+    let getCachedDisposable = vscode.commands.registerCommand('exraplearningextension.getCachedhandler', () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            return;
+        }
+        const selection = editor.selection;
+        const selectedText = editor.document.getText(selection);
+        vscode.window.showInformationMessage(selectedText);
+        gptCaller_sdk_1.GptCaller.askChatGPT("Write a Pythn function " + selectedText).then((response) => {
+            editor.edit((editBuilder) => {
+                const document = editor.document;
+                const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
+                editBuilder.insert(new vscode.Position(lastLine + 1, 0), '\n\n' + response.slice(1) + '\n');
+            });
+        }).catch((error) => {
+            console.log(error);
+        });
+        context.subscriptions.push(getCachedDisposable);
+    });
 }
 exports.activate = activate;
 // This method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;
+const https = require('http');
+function makePostRequest(url, postData) {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData),
+        },
+    };
+    return new Promise((resolve, reject) => {
+        const req = https.request(url, options, (res) => {
+            let body = '';
+            res.on('data', (chunk) => {
+                body += chunk;
+            });
+            res.on('end', () => {
+                resolve(body);
+            });
+        }).on('error', (err) => {
+            reject(err);
+        });
+        req.write(postData);
+        req.end();
+    });
+}
 //# sourceMappingURL=extension.js.map
