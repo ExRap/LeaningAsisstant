@@ -23,7 +23,7 @@ def save_partial():
         type: string
     responses:
       201:
-        description: "Partial record started"
+        description: "Partial record created"
       400:
         description: "generic error"
     """
