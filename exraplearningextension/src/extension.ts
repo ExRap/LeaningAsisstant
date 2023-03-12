@@ -125,7 +125,7 @@ Whether you are looking to learn Python for work, personal projects, or just for
 		const selection = editor.selection;
 		const selectedText = editor.document.getText(selection);
 		vscode.window.showInformationMessage(selectedText);
-		GptCaller.askChatGPT("Write a Pythn function " + selectedText).then((response) => {
+		GptCaller.askChatGPT("Write a Python function " + selectedText).then((response) => {
 			editor.edit((editBuilder) => {
 				const document = editor.document;
     			const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
@@ -248,7 +248,7 @@ Whether you are looking to learn Python for work, personal projects, or just for
 		const selection = editor.selection;
 		const selectedText = editor.document.getText(selection);
 		vscode.window.showInformationMessage(selectedText);
-		GptCaller.askChatGPT("Write a Pythn function " + selectedText).then((response) => {
+		GptCaller.askChatGPT("Write a Python function " + selectedText).then((response) => {
 			editor.edit((editBuilder) => {
 				const document = editor.document;
     			const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
