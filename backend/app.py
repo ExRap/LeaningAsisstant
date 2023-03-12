@@ -20,7 +20,7 @@ cors = CORS(app, resources={r"*": {"origins": "*"}})
 # app.register_blueprint(users_endpoint)
 # app.register_blueprint(centers_endpoint)
 app.register_blueprint(sandbox_blueprint)
-# app.register_blueprint(partial_blueprint)
+app.register_blueprint(partial_blueprint)
 
 app.config['SWAGGER'] = {
     'favicon': '/static/favicon.ico',

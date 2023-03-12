@@ -10,6 +10,7 @@ sandbox_blueprint = Blueprint("sandbox", __name__, url_prefix="/api/v1/sandbox")
 
 logging.basicConfig(level=logging.DEBUG)
 
+
 SANDBOX_COMPUTING_EDGE_URL = 'http://20.23.243.43:5001/api/v1/sandbox/start'
 
 @sandbox_blueprint.route("/start", methods=["POST"])
@@ -35,17 +36,23 @@ def run_sandbox():
     
 
     try:
-        file_content = request.form.get('file_content')
+        data = dict(loads(request.data))
+        file_content = data.get('file_content')
         # headers = {
         #     'Content-Type': 'multipart/form-data',
         # }
+        if not file_content:
+            file_content = request.form.get('file_content')
 
         data = {
             'file_content': file_content,
         }
 
+        logging.debug(f'{data}')
+        logging.debug(f'{request.form}')
         response = requests.post(SANDBOX_COMPUTING_EDGE_URL, data=data)
         
+        logging.debug(f'{response.text}')
         return jsonify(json.loads(response.text)), 201
 
     except Exception as e:

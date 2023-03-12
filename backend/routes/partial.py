@@ -27,7 +27,7 @@ def save_partial():
       400:
         description: "generic error"
     """
-    partial_content = request.form.get('file_content')
+    partial_content = dict(loads(request.form.get('file_content')))
     partial_collection.insert_one(partial_content)
     partial_content['_id'] = str(partial_content['_id'])
     return jsonify(partial_content), 201
