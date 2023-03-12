@@ -46,7 +46,6 @@ def run_sandbox():
 
         response = requests.post(SANDBOX_COMPUTING_EDGE_URL, data=data)
         
-
         return jsonify(json.loads(response.text)), 201
 
     except Exception as e:
