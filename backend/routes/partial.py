@@ -3,6 +3,8 @@ from bson.json_util import dumps, loads
 from bson.objectid import ObjectId
 
 from lib.mongo_client import exrap_db
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 partial_blueprint = Blueprint("partial", __name__, url_prefix="/api/v1/partial")
 partial_collection = exrap_db['partials']
@@ -27,7 +29,15 @@ def save_partial():
       400:
         description: "generic error"
     """
-    partial_content = dict(loads(request.form.get('file_content')))
+    logging.debug(f'request data is: {request.data.decode()}')
+    logging.debug(f'request form is: {request.form}')
+    data = dict(loads(request.data.decode()))
+    partial_content = dict(loads(data.get('file_content')))
+    logging.debug(f'partial_content is: {partial_content}')
+
+    if not partial_content:
+        partial_content = dict(loads(request.form.get('file_content')))
+
     partial_collection.insert_one(partial_content)
     partial_content['_id'] = str(partial_content['_id'])
     return jsonify(partial_content), 201
