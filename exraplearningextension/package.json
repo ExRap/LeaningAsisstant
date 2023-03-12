@@ -28,6 +28,14 @@
       {
         "command": "exraplearningextension.writeFunctionhandler",
         "title": "Write Function"
+      },
+      {
+        "command": "exraplearningextension.writePartialhandler",
+        "title": "Write Partial Function"
+      },
+      {
+        "command": "exraplearningextension.optimizeCodehandler",
+        "title": "Optimize code"
       }
     ]
   },
@@ -43,6 +51,7 @@
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
+    "@types/uuid": "^9.0.1",
     "@types/vscode": "^1.76.0",
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
@@ -55,6 +64,7 @@
   "dependencies": {
     "genezio": "^0.3.5",
     "http": "^0.0.1-security",
-    "https": "^1.0.0"
+    "https": "^1.0.0",
+    "uuid": "^9.0.0"
   }
 }

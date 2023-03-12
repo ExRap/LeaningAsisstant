@@ -29,7 +29,7 @@ export class GptCaller {
   async optimizeCode(requestText) {
     const completion = await this.openai.createCompletion({
       model: "text-davinci-003",
-      prompt: `optimize me this code:` + requestText,
+      prompt: `optimize me this code \n` + requestText,
       max_tokens: 2048
     });
     console.log(
@@ -55,7 +55,7 @@ export class GptCaller {
   async generatePartialFunction(user_id, requestText) {
     const completion = await this.openai.createCompletion({
       model: "text-davinci-003",
-      prompt: `describe me this code:` + requestText,
+      prompt: `Write a Python function` + requestText,
       max_tokens: 2048
     });
     console.log(
@@ -67,9 +67,8 @@ export class GptCaller {
     // TODO
     let lines = completion.data.choices[0].text.split("\n");
     lines = lines.splice(0, lines.length / 2);
-    lines.append("# TODO");
-    return lines.join(lines);
-    // return completion.data.choices[0].text.splice() / 2;
+    lines.push("# TODO");
+    return lines.join("\n");
   }
 
   async generateCompleteFunction(user_id, requestText) {

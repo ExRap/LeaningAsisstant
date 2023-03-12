@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { GptCaller} from "./sdk/gptCaller.sdk" 
+import { v4 as uuidv4 } from 'uuid';
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -9,7 +10,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "exraplearningextension" is now active!');
-
+	const uuid = uuidv4();
 	let initialDisposable = vscode.commands.registerCommand('exraplearningextension.pythonTutorial', () => {
 		const editor = vscode.window.activeTextEditor;
 		if (!editor) {
@@ -124,7 +125,7 @@ Whether you are looking to learn Python for work, personal projects, or just for
 		const selection = editor.selection;
 		const selectedText = editor.document.getText(selection);
 		vscode.window.showInformationMessage(selectedText);
-		GptCaller.describeCode("Write a Pythn function " + selectedText).then((response) => {
+		GptCaller.askChatGPT("Write a Pythn function " + selectedText).then((response) => {
 			editor.edit((editBuilder) => {
 				const document = editor.document;
     			const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
@@ -139,6 +140,62 @@ Whether you are looking to learn Python for work, personal projects, or just for
 	});
 
 	context.subscriptions.push(writeFunctionDisposable);
+
+	let writePartialDisposable = vscode.commands.registerCommand('exraplearningextension.writePartialhandler', () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+		  return; // No open text editor
+		}
+	  
+		// Get the selected text
+		const selection = editor.selection;
+		const selectedText = editor.document.getText(selection);
+		vscode.window.showInformationMessage(selectedText);
+		GptCaller.generatePartialFunction( uuid, selectedText).then((response) => {
+			console.log(response)
+			editor.edit((editBuilder) => {
+				const document = editor.document;
+    			const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
+
+				editBuilder.insert(new vscode.Position(lastLine + 1, 0), '\n\n' + response.slice(1) + '\n');
+			});
+			
+		}).catch((error) => {
+			console.log(error);
+		});
+		
+	});
+
+	context.subscriptions.push(writePartialDisposable);
+
+	let optimizeCodeDisposable = vscode.commands.registerCommand('exraplearningextension.optimizeCodehandler', () => {
+		const editor = vscode.window.activeTextEditor;
+		if (!editor) {
+		  return; // No open text editor
+		}
+	  
+		// Get the selected text
+		const selection = editor.selection;
+		const selectedText = editor.document.getText(selection);
+		vscode.window.showInformationMessage(selectedText);
+		GptCaller.optimizeCode(selectedText).then((response) => {
+			console.log(response)
+			editor.edit((editBuilder) => {
+				const document = editor.document;
+    			const lastLine = document.lineAt(document.lineCount - 1).lineNumber;
+
+				editBuilder.insert(new vscode.Position(lastLine + 1, 0), '\n\n' + response.slice(1) + '\n');
+			});
+			
+		}).catch((error) => {
+			console.log(error);
+		});
+		
+	});
+
+	context.subscriptions.push(optimizeCodeDisposable);
+
+	
 }
 
 // This method is called when your extension is deactivated
