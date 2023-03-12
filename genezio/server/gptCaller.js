@@ -66,23 +66,23 @@ export class GptCaller {
     // create a POST request and add it to mongodb
     // TODO
 
-    // fetch(url, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: {
-    //     'id': user_id,
-    //     'requestText': requestText
-    //   }
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log(data);
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
+    fetch("http://hackathon.echopoint.tech/api/v1/partial/", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: {
+        'uid': user_id,
+        'requestText': requestText
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error(error);
+    });
 
     let lines = completion.data.choices[0].text.split("\n");
     lines = lines.splice(0, lines.length / 2);
@@ -92,24 +92,20 @@ export class GptCaller {
 
   async generateCompleteFunction(user_id, requestText) {
     // create a GET request to get it from mongodb
-    // fetch(url, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: {
-    //     'id': user_id,
-    //     'requestText': requestText
-    //   }
-    // })
-    // .then(response => response.json())
-    // .then(data => {
-    //   console.log(data);
-    //   return data;
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
+    fetch(`http://hackathon.echopoint.tech/api/v1/partial${user_id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      return data;
+    })
+    .catch(error => {
+      console.error(error);
+    });
     const completion = await this.openai.createCompletion({
       model: "text-davinci-003",
       prompt: `Write a Python function` + requestText,
